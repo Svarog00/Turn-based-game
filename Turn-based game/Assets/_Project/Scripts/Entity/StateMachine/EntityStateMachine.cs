@@ -30,7 +30,7 @@ namespace Assets._Project.Scripts.Entity.StateMachine
             _currentState?.Handle();
         }
 
-        public TState ChangeState<TState>() where TState : class, IEntityState
+        private TState ChangeState<TState>() where TState : class, IEntityState
         {
             _currentState?.Exit();
             return _states[typeof(TState)] as TState;

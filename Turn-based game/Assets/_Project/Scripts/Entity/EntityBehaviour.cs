@@ -8,7 +8,7 @@ namespace Assets._Project.Scripts.Entity
 {
     public class EntityBehaviour : MonoBehaviour
     {
-        private EntityCommandInvoker _invoker;
+        [SerializeField] private EntityCommandInvokerInstance _invoker;
 
         private IMovement _entityMovement;
         private EntityStateMachine _stateMachine;
@@ -18,13 +18,10 @@ namespace Assets._Project.Scripts.Entity
             _stateMachine = new EntityStateMachine();
             _stateMachine.States = new Dictionary<Type, IEntityState>
             {
-
+                [typeof(DecisionMakingState)] = new DecisionMakingState(_stateMachine, _invoker.CommandInvoker),
             };
-        }
 
-        public void Initialize()
-        {
-            _stateMachine = new EntityStateMachine();
+            _stateMachine.Enter<DecisionMakingState>();
         }
 
         public void Act()

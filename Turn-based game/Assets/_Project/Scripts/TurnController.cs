@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class TurnController : MonoBehaviour
 
     private Turn _turn;
     private int _currentCharacterIndex;
+    private EntityBehaviour _currentNpc;
 
     void Start()
     {
@@ -30,7 +32,7 @@ public class TurnController : MonoBehaviour
             return;
         }
 
-
+        _currentNpc.Act();
     }
 
     public void PlayerEndTurn()
@@ -46,5 +48,7 @@ public class TurnController : MonoBehaviour
             _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
             return;
         }
+
+        _currentNpc = _charactersOrder[_currentCharacterIndex].GetComponent<EntityBehaviour>();
     }
 }
