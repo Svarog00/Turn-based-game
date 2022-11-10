@@ -1,13 +1,7 @@
 {
   "dependencies": {
-    "anton.menutools": {
-      "version": "file:E:/GitHub/Unity Packages/Tools",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "anton.pathfinding": {
-      "version": "file:E:/GitHub/Unity Packages/Pathfinding",
+      "version": "file:E:/GitHub/Turn-based-game/Unity Packages/Pathfinding",
       "depth": 0,
       "source": "local",
       "dependencies": {}

@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "anton.menutools": "file:E:/GitHub/Unity Packages/Tools",
-    "anton.pathfinding": "file:E:/GitHub/Unity Packages/Pathfinding",
+    "anton.pathfinding": "file:E:/GitHub/Turn-based-game/Unity Packages/Pathfinding",
     "com.unity.2d.animation": "5.0.4",
     "com.unity.2d.pixel-perfect": "4.0.1",
     "com.unity.2d.psdimporter": "4.0.2",

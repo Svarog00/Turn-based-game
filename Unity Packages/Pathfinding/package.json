@@ -1,0 +1,6 @@
+{
+	"name": "anton.pathfinding",
+	"version": "0.0.2-preview",
+	"displayName": "Anton's pathfinding with grid mesh",
+	"description": "Pathfinding, grid mesh and utility class"
+}

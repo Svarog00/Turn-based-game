@@ -20,14 +20,15 @@ public class PlayerControl : MonoBehaviour
     public void SetActiveCharacter(GameObject character)
     {
         _activeCharacter = character;
+        _activeCharacterRoot = _activeCharacter.GetComponent<ICharacter>();
     }
 
     public void GetInput()
     {
-        /*if(_activeCharacterRoot.IsActing)
+        if(_activeCharacterRoot.IsActing)
         {
             return;
-        }*/
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -45,12 +46,12 @@ public class PlayerControl : MonoBehaviour
             {
                 if(targetObject.tag == EnemyTagName)
                 {
-                    MacroCommand macroCommand = new MacroCommand();
-                    macroCommand.AddCommand(new MoveInActionRangeCommand(new Vector3(mousePosition.x, mousePosition.y, 0), 
+                    MacroCommand attackMacroCommand = new MacroCommand();
+                    attackMacroCommand.AddCommand(new MoveInActionRangeCommand(new Vector3(mousePosition.x, mousePosition.y, 0), 
                         _activeCharacter));
-                    macroCommand.AddCommand(new AttackCommand(targetObject.gameObject, _activeCharacter));
+                    attackMacroCommand.AddCommand(new AttackCommand(targetObject.gameObject, _activeCharacter));
 
-                    _commandInvokerInstance.SetCommand(macroCommand);
+                    _commandInvokerInstance.SetCommand(attackMacroCommand);
                     return;
                 }
             }

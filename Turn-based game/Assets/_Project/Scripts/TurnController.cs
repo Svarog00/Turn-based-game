@@ -22,6 +22,8 @@ public class TurnController : MonoBehaviour
     void Start()
     {
         _currentCharacterIndex = 0;
+        _startCharacter = _charactersOrder[_currentCharacterIndex];
+        _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
     }
 
     private void Update()
@@ -32,7 +34,7 @@ public class TurnController : MonoBehaviour
             return;
         }
 
-        _currentNpc.Act();
+        _currentNpc?.Act();
     }
 
     public void PlayerEndTurn()
@@ -42,6 +44,12 @@ public class TurnController : MonoBehaviour
 
     private void SwitchTurn()
     {
+        _currentCharacterIndex++;
+        if(_currentCharacterIndex >= _charactersOrder.Count)
+        {
+            _currentCharacterIndex = 0;
+        }
+
         _turn = _charactersOrder[_currentCharacterIndex].GetComponent<ICharacter>().Side;
         if(_turn == Turn.Player)
         {

@@ -24,7 +24,7 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
 
         public void Execute()
         {
-            ExecuteCommands();
+            ExecuteCommandsAsync();
         }
 
         public void Undo()
@@ -35,7 +35,7 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
             }
         }
 
-        private async void ExecuteCommands()
+        private async void ExecuteCommandsAsync()
         {
             for(int i = 0; i < _commands.Count; i++)
             {
