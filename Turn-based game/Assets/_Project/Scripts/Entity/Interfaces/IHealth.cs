@@ -8,6 +8,8 @@ namespace Assets._Project.Scripts.Entity
 {
     public interface IHealth
     {
+        public int HealthPoints { get; }
+
         public void Heal(int health);
         public void Hurt(int damage);
     }

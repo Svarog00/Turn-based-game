@@ -1,12 +1,26 @@
 ﻿using UnityEngine;
+using Assets._Project.Scripts.Data;
 
-public class Character : MonoBehaviour, ICharacter
+namespace Assets._Project.Scripts.Entity
 {
-    public Turn Side 
-    { 
-        get => _side;
-    }
-    public bool IsActing { get; set; }
+    public class Character : MonoBehaviour, ICharacter
+    {
+        public Turn Side
+        {
+            get => _side;
+        }
+        public bool IsActing { get; set; }
 
-    [SerializeField] private Turn _side;
+        [SerializeField] private Turn _side;
+
+        public CharacterWorldData GenerateWorldData()
+        {
+            return new CharacterWorldData
+            {
+                Position = new Vector2Surrogate(transform.position),
+
+                HealthPoints = gameObject.GetComponent<IHealth>().HealthPoints,
+            };
+        }
+    }
 }

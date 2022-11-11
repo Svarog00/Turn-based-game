@@ -15,6 +15,8 @@ namespace Assets._Project.Scripts.Entity
         [SerializeField] private int _maxHealth;
         private int _currentHealth;
 
+        public int HealthPoints => _currentHealth;
+
         public void Heal(int health)
         {
             Debug.Log("Ahh that's better!");

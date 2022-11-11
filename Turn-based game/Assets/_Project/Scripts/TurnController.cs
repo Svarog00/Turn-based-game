@@ -11,6 +11,8 @@ public enum Turn
 
 public class TurnController : MonoBehaviour
 {
+    public IEnumerable Characters => _charactersOrder;
+
     [SerializeField] private GameObject _startCharacter;
     [SerializeField] private PlayerControl _playerControl;
     [SerializeField] private List<GameObject> _charactersOrder;
