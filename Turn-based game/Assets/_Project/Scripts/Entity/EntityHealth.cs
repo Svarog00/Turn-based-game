@@ -6,16 +6,16 @@ namespace Assets._Project.Scripts.Entity
     public class EntityHealth : MonoBehaviour, IHealth
     {
         public event EventHandler<HealthChangedEventArgs> OnHealthChanged;
-
         public class HealthChangedEventArgs
         {
             public int Health { get; set; }
         }
 
+        public int HealthPoints => _currentHealth;
+
         [SerializeField] private int _maxHealth;
         private int _currentHealth;
 
-        public int HealthPoints => _currentHealth;
 
         public void Heal(int health)
         {

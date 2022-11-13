@@ -11,7 +11,8 @@ public enum Turn
 
 public class TurnController : MonoBehaviour
 {
-    public IEnumerable Characters => _charactersOrder;
+    public IEnumerable<GameObject> Characters => _charactersOrder;
+    public int CurrentCharacterIndex;
 
     [SerializeField] private GameObject _startCharacter;
     [SerializeField] private PlayerControl _playerControl;
@@ -46,13 +47,15 @@ public class TurnController : MonoBehaviour
 
     private void SwitchTurn()
     {
-        _currentCharacterIndex++;
+        /*_currentCharacterIndex++;
         if(_currentCharacterIndex >= _charactersOrder.Count)
         {
             _currentCharacterIndex = 0;
-        }
+        }*/
 
-        _turn = _charactersOrder[_currentCharacterIndex].GetComponent<ICharacter>().Side;
+        _turn = _charactersOrder[_currentCharacterIndex++ % _charactersOrder.Count]
+            .GetComponent<ICharacter>()
+            .Side;
         if(_turn == Turn.Player)
         {
             _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
@@ -61,4 +64,6 @@ public class TurnController : MonoBehaviour
 
         _currentNpc = _charactersOrder[_currentCharacterIndex].GetComponent<EntityBehaviour>();
     }
+
+
 }

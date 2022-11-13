@@ -12,6 +12,12 @@ namespace Assets._Project.Scripts.Entity
         public bool IsActing { get; set; }
 
         [SerializeField] private Turn _side;
+        private EntityHealth _entityHealth;
+
+        private void Awake()
+        {
+            _entityHealth = GetComponent<EntityHealth>();
+        }
 
         public CharacterWorldData GenerateWorldData()
         {
