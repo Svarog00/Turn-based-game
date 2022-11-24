@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Assets._Project.Scripts.VersionControl
 {
@@ -8,6 +9,7 @@ namespace Assets._Project.Scripts.VersionControl
     {
         public Commit CurrentCommit => _currentCommit;
 
+        private Commit _lastCommit;
         private Commit _currentCommit;
 
         private Branch _currentBranch;
@@ -24,7 +26,15 @@ namespace Assets._Project.Scripts.VersionControl
 
         public void AddNewCommit(Commit newCommit)
         {
-            if(newCommit.Equals(_currentCommit))
+            if (_currentCommit == null)
+            {
+                _currentBranch.AddNewCommit(newCommit);
+                _lastCommit = _currentBranch.LastCommit;
+                _currentCommit = _lastCommit;
+                return;
+            }
+
+            if (newCommit.Equals(_currentCommit))
             {
                 return;
             }
@@ -32,7 +42,8 @@ namespace Assets._Project.Scripts.VersionControl
             if(_currentCommit.Next.Count == 0)
             {
                 _currentBranch.AddNewCommit(newCommit);
-                _currentCommit = _currentBranch.LastCommit;
+                _lastCommit = _currentBranch.LastCommit;
+                _currentCommit = _lastCommit;
                 return;
             }
 
@@ -51,16 +62,19 @@ namespace Assets._Project.Scripts.VersionControl
         {
             _currentCommit.Next.Add(commit);
             commit.Previous = _currentCommit;
-            _currentCommit = commit;
+            _lastCommit = commit;
 
-            _currentBranch = new Branch(_currentCommit);
+            _currentBranch = new Branch(_lastCommit);
             _branches.Add(_currentBranch);
+
+            _currentCommit = _lastCommit;
         }
 
         public void SwitchBranch(Guid guid)
         {
             _currentBranch = _branches.Find((Branch branch) => branch.Guid == guid);
-            _currentCommit = _currentBranch.LastCommit;
+            _lastCommit = _currentBranch.LastCommit;
+            _currentCommit = _lastCommit;
         }
 
         public Commit GetPreviousCommit()
@@ -69,11 +83,9 @@ namespace Assets._Project.Scripts.VersionControl
             return _currentCommit;
         }
 
-        public Commit GetNextCommit(Guid branchGuid)
+        public Commit GetNextCommit(Guid commitGuid)
         {
-            //TODO: return next commit depending on current branch or choice of the user
-
-            _currentCommit = _currentCommit.Next.First(); 
+            _currentCommit = _currentCommit.Next.Find((Commit commit) => commit.Guid == commitGuid); 
             return _currentCommit;
         }
     }

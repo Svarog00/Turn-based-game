@@ -12,17 +12,17 @@ namespace Assets._Project.Scripts.Data
 
         public bool Equals(CharacterWorldData other)
         {
-            if(HealthPoints == other.HealthPoints)
+            if(Position.X != other.Position.X || Position.Y != other.Position.Y)
             {
-                return true;
+                return false;
             }
 
-            if(Position.X == other.Position.X || Position.Y == other.Position.Y)
+            if(HealthPoints != other.HealthPoints)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
     }
 

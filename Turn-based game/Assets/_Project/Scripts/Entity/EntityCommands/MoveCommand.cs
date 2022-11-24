@@ -30,8 +30,8 @@ namespace Assets._Project.Scripts.EntityCommands
         public void Execute()
         {
             _entityMovement.MoveTo(_targetPosition);
-            //_character.IsActing = true;
-            //WaitCommandDoneAsync();
+            _character.IsActing = true;
+            WaitCommandDoneAsync();
         }
 
         public void Undo()

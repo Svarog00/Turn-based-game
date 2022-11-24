@@ -11,17 +11,39 @@ namespace Assets._Project.Scripts.Entity
             public int Health { get; set; }
         }
 
-        public int HealthPoints => _currentHealth;
+        public int HealthPoints 
+        {
+            get => _currentHealth; 
+            set
+            {
+                if (value > _maxHealth)
+                {
+                    return;
+                }
+
+                _currentHealth = value;
+
+                gameObject.SetActive(_isAlive);
+            }
+        }
 
         [SerializeField] private int _maxHealth;
         private int _currentHealth;
 
+        private bool _isAlive => _currentHealth > 0;
+
+        private void Awake()
+        {
+            _currentHealth = _maxHealth;
+        }
 
         public void Heal(int health)
         {
             Debug.Log("Ahh that's better!");
             _currentHealth += health;
             OnHealthChanged?.Invoke(this, new HealthChangedEventArgs { Health = _currentHealth });
+
+            gameObject.SetActive(_isAlive);
         }
 
         public void Hurt(int damage)
@@ -29,6 +51,8 @@ namespace Assets._Project.Scripts.Entity
             Debug.Log("Oi that hurts!");
             _currentHealth -= damage;
             OnHealthChanged?.Invoke(this, new HealthChangedEventArgs { Health = _currentHealth });
+
+            gameObject.SetActive(_isAlive);
         }
     }
 }

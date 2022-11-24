@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     private const string EnemyTagName = "Enemy";
+    private const int LeftMouseButtonCode = 1;
 
     /// <summary>
     /// —читывает действи€ игрока и создает команды дл€ отправител€ в зависимости от контекста
@@ -30,7 +31,7 @@ public class PlayerControl : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(LeftMouseButtonCode))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D[] targetObjects = Physics2D.OverlapCircleAll(mousePosition, 0.1f, _charactersLayer);

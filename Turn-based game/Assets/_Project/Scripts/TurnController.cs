@@ -1,5 +1,6 @@
+using Assets._Project.Scripts.Data;
 using Assets._Project.Scripts.Entity;
-using System.Collections;
+using Assets._Project.Scripts.VersionControl;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ public enum Turn
 public class TurnController : MonoBehaviour
 {
     public IEnumerable<GameObject> Characters => _charactersOrder;
-    public int CurrentCharacterIndex;
+    public int CurrentCharacterIndex => _currentCharacterIndex;
+    public Turn CurrentTurn => _turn;
 
     [SerializeField] private GameObject _startCharacter;
     [SerializeField] private PlayerControl _playerControl;
@@ -45,6 +47,17 @@ public class TurnController : MonoBehaviour
         SwitchTurn();
     }
 
+    public void LoadNewState(Commit commit)
+    {
+        _turn = commit.CurrentTurn;
+        _currentCharacterIndex = commit.CurrentCharacterIndexTurn;
+
+        for(int i = 0; i < _charactersOrder.Count; i++)
+        {
+            _charactersOrder[i].GetComponent<Character>().SetNewData(commit.CharactersData[i]);
+        }
+    }
+
     private void SwitchTurn()
     {
         /*_currentCharacterIndex++;
@@ -64,6 +77,4 @@ public class TurnController : MonoBehaviour
 
         _currentNpc = _charactersOrder[_currentCharacterIndex].GetComponent<EntityBehaviour>();
     }
-
-
 }

@@ -19,13 +19,18 @@ namespace Assets._Project.Scripts.Entity
             _entityHealth = GetComponent<EntityHealth>();
         }
 
+        public void SetNewData(CharacterWorldData characterWorldData)
+        {
+            _entityHealth.HealthPoints = characterWorldData.HealthPoints;
+            transform.position = new Vector2(characterWorldData.Position.X, characterWorldData.Position.Y);
+        }
+
         public CharacterWorldData GenerateWorldData()
         {
             return new CharacterWorldData
             {
                 Position = new Vector2Surrogate(transform.position),
-
-                HealthPoints = gameObject.GetComponent<IHealth>().HealthPoints,
+                HealthPoints = _entityHealth.HealthPoints,
             };
         }
     }
