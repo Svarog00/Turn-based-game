@@ -7,6 +7,11 @@ namespace Assets._Project.Scripts
 {
     public class EntityCommandInvoker
     {
+        public List<ICommand> ExecutedCommands
+        {
+            get => _undoCommandsQueue;
+            set => _undoCommandsQueue = value;
+        }
         private List<ICommand> _undoCommandsQueue;
 
         private int _currentCommandNumber = 0;

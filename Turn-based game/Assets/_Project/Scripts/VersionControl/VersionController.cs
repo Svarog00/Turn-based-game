@@ -7,7 +7,9 @@ namespace Assets._Project.Scripts.VersionControl
 {
     public class VersionController
     {
+        public Commit LastCommit => _lastCommit;
         public Commit CurrentCommit => _currentCommit;
+        public List<Branch> Branches => _branches;
 
         private Commit _lastCommit;
         private Commit _currentCommit;
@@ -79,7 +81,7 @@ namespace Assets._Project.Scripts.VersionControl
 
         public Commit GetPreviousCommit()
         {
-            _currentCommit = _currentCommit.Previous;
+            _currentCommit = _currentCommit?.Previous;
             return _currentCommit;
         }
 

@@ -3,13 +3,16 @@ using Assets._Project.Scripts.Data;
 using UnityEngine;
 using System.Collections.Generic;
 using Assets._Project.Scripts.Entity;
-using System;
 using UnityEngine.UI;
+using Assets._Project.Scripts;
+using System.Linq;
 
 public class GameStateController : MonoBehaviour
 {
+    [SerializeField] private EntityCommandInvokerInstance _commandInvoker;
     [SerializeField] private TurnController _turnController;
     [SerializeField] private Transform _commitsViewArea;
+    [SerializeField] private Transform _branchesViewArea;
     [SerializeField] private GameObject _buttonPrefab;
 
     private VersionController _controller;
@@ -18,24 +21,31 @@ public class GameStateController : MonoBehaviour
     void Start()
     {
         _controller = new VersionController();
+
+        UpdateBranchesList();
     }
 
     public void CreateNewCommit()
     {
-        Commit newCommit = new Commit(_turnController.CurrentCharacterIndex, GenerateWorldData(), _turnController.CurrentTurn);
+        Commit newCommit = new Commit(_turnController.CurrentCharacterIndex, GenerateWorldData(), _turnController.CurrentTurn, _commandInvoker.CommandInvoker.ExecutedCommands);
         _controller.AddNewCommit(newCommit);
+
+        UpdateBranchesList();
+        UpdateNextCommitsList();
     }
 
     public void LoadLastCommit()
     {
-        var commit = _controller.CurrentCommit;
-        _turnController.LoadNewState(commit);
+        var commit = _controller.LastCommit;
+        LoadNewState(commit);
+
+        UpdateNextCommitsList();
     }
 
     public void LoadPreviousCommit()
     {
-        Commit commit = _controller.GetPreviousCommit();
-        _turnController.LoadNewState(commit);
+        var commit = _controller.GetPreviousCommit();
+        LoadNewState(commit);
 
         UpdateNextCommitsList();
     }
@@ -62,6 +72,35 @@ public class GameStateController : MonoBehaviour
 
             button.GetComponentInChildren<Text>().text = _controller.CurrentCommit.Next[i].Guid.ToString();
         }
+    }
+
+    private void UpdateBranchesList()
+    {
+        foreach (Transform button in _branchesViewArea)
+        {
+            Destroy(button.gameObject);
+        }
+
+        for (int i = 0; i < _controller.Branches.Count; i++)
+        {
+            GameObject button = Instantiate(_buttonPrefab);
+            button.transform.SetParent(_branchesViewArea.transform, false);
+
+            var index = i;
+            button.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                _controller.SwitchBranch(_controller.Branches[index].Guid);
+                Debug.Log(_controller.Branches[index].Guid);
+            });
+
+            button.GetComponentInChildren<Text>().text = _controller.Branches[index].Guid.ToString();
+        }
+    }
+
+    private void LoadNewState(Commit commitToLoad)
+    {
+        _turnController.LoadNewState(commitToLoad);
+        _commandInvoker.CommandInvoker.ExecutedCommands = commitToLoad.ExecutedCommands;
     }
 
     private List<CharacterWorldData> GenerateWorldData()

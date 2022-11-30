@@ -32,7 +32,7 @@ namespace Assets._Project.Scripts.VersionControl
 
             newCommit.Previous = _lastCommit;
             _lastCommit.Next.Add(newCommit);
-            _lastCommit = _lastCommit.Next.Last();
+            _lastCommit = newCommit;
         }
     }
 }

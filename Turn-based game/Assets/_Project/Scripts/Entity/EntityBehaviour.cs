@@ -19,6 +19,7 @@ namespace Assets._Project.Scripts.Entity
             _stateMachine.States = new Dictionary<Type, IEntityState>
             {
                 [typeof(DecisionMakingState)] = new DecisionMakingState(_stateMachine, _invoker.CommandInvoker),
+                [typeof(ExecutingCommandState)] = new ExecutingCommandState(),
             };
 
             _stateMachine.Enter<DecisionMakingState>();

@@ -1,4 +1,5 @@
 ﻿using Assets._Project.Scripts.Data;
+using Assets._Project.Scripts.EntityCommands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,9 @@ namespace Assets._Project.Scripts.VersionControl
         public readonly Turn CurrentTurn;
         public readonly int CurrentCharacterIndexTurn;
         public readonly List<CharacterWorldData> CharactersData;
+        public readonly List<ICommand> ExecutedCommands;
 
-        public Commit(int currentCharacterIndexTurn, IEnumerable<CharacterWorldData> charactersWorldData, Turn currentTurn)
+        public Commit(int currentCharacterIndexTurn, IEnumerable<CharacterWorldData> charactersWorldData, Turn currentTurn, IEnumerable<ICommand> commandsList)
         {
             Guid = Guid.NewGuid();
             Next = new List<Commit>();
@@ -25,6 +27,7 @@ namespace Assets._Project.Scripts.VersionControl
             CurrentTurn = currentTurn;
             CharactersData = charactersWorldData.ToList();
             CurrentCharacterIndexTurn = currentCharacterIndexTurn;
+            ExecutedCommands = commandsList.ToList();
         }
 
         public bool Equals(Commit other)
