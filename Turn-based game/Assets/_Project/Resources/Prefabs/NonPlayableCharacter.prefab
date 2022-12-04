@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6448760855020193562}
   - component: {fileID: 6448760855020193563}
   - component: {fileID: 6448760855020193564}
+  - component: {fileID: 1966939857236817065}
   - component: {fileID: 6448760855020193565}
   - component: {fileID: 6448760855020193566}
   - component: {fileID: 6448760855020193567}
@@ -50,6 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _side: 1
+  _maxActionsAvailable: 1
+  _maxDistanceCanTravel: 0
 --- !u!114 &6448760855020193562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _invoker: {fileID: 0}
+  _turnController: {fileID: 0}
 --- !u!114 &6448760855020193563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +94,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4fdc31e496ff14f9f94cf07f6843df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 100
+--- !u!114 &1966939857236817065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6448760855020193536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd9156b8c738294c968fd780686ca6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 0.5
+  _damage: 23
 --- !u!61 &6448760855020193565
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -36,6 +36,7 @@ namespace Assets._Project.Scripts.EntityCommands
 
         public void Undo()
         {
+            _character.DistanceCanTravel += Vector2.Distance(_oldPosition, _targetPosition);
             _entityTransform.position = _oldPosition;
         }
 
@@ -45,6 +46,7 @@ namespace Assets._Project.Scripts.EntityCommands
             {
                 await Task.Yield();
             }
+            _character.DistanceCanTravel -= Vector2.Distance(_oldPosition, _targetPosition);
             _character.IsActing = false;
         }
     }

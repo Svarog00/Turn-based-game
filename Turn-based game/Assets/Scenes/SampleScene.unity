@@ -1248,7 +1248,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1315597060}
         m_TargetAssemblyTypeName: TurnController, Assembly-CSharp
-        m_MethodName: PlayerEndTurn
+        m_MethodName: EndTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2092,6 +2092,10 @@ PrefabInstance:
       propertyPath: _invoker
       value: 
       objectReference: {fileID: 696518291}
+    - target: {fileID: 6448760855020193562, guid: 642eca5a5148297478bb026c8f8d67a1, type: 3}
+      propertyPath: _turnController
+      value: 
+      objectReference: {fileID: 1315597060}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 642eca5a5148297478bb026c8f8d67a1, type: 3}
 --- !u!1001 &7263423530925816162

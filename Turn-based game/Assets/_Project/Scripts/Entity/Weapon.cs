@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BowWeapon : MonoBehaviour, IWeapon
+public class Weapon : MonoBehaviour, IWeapon
 {
     public int Damage => _damage;
 

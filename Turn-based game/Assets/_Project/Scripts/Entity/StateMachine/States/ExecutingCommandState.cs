@@ -1,20 +1,36 @@
-﻿namespace Assets._Project.Scripts.Entity.StateMachine
+﻿using UnityEngine;
+
+namespace Assets._Project.Scripts.Entity.StateMachine
 {
     public class ExecutingCommandState : IEntityState
     {
-        public void Enter()
+        private EntityStateMachine _entityStateMachine;
+        private ICharacter _character;
+
+        public ExecutingCommandState(EntityStateMachine entityStateMachine, GameObject entityContext)
         {
-            throw new System.NotImplementedException();
+            _entityStateMachine = entityStateMachine;
+            _character = entityContext.GetComponent<ICharacter>();
         }
 
-        public void Exit()
+        public void Enter()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Handle()
         {
-            throw new System.NotImplementedException();
+            if(_character.IsActing)
+            {
+                return;
+            }
+            _entityStateMachine.Enter<DecisionMakingState>();
         }
+
+        public void Exit()
+        {
+            
+        }
+
     }
 }

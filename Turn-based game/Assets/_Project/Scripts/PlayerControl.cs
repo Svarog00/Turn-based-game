@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Entity;
 using Assets._Project.Scripts.Entity.EntityCommands;
 using Assets._Project.Scripts.EntityCommands;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     private const string EnemyTagName = "Enemy";
-    private const int LeftMouseButtonCode = 1;
+    private const int MouseButtonCode = 1;
 
     /// <summary>
     /// —читывает действи€ игрока и создает команды дл€ отправител€ в зависимости от контекста
@@ -15,45 +16,61 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private EntityCommandInvokerInstance _commandInvokerInstance;
     [SerializeField] private LayerMask _charactersLayer;
 
-    private GameObject _activeCharacter;
-    private ICharacter _activeCharacterRoot;
+    private ICharacter _activeCharacter;
+    private GameObject _activeCharacterGameObject;
 
     public void SetActiveCharacter(GameObject character)
     {
-        _activeCharacter = character;
-        _activeCharacterRoot = _activeCharacter.GetComponent<ICharacter>();
+        _activeCharacterGameObject = character;
+        _activeCharacter = _activeCharacterGameObject.GetComponent<ICharacter>();
     }
 
     public void GetInput()
     {
-        if(_activeCharacterRoot.IsActing)
+        if(_activeCharacter.IsActing)
         {
             return;
         }
 
-        if (Input.GetMouseButtonDown(LeftMouseButtonCode))
+        if (Input.GetMouseButtonDown(MouseButtonCode))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D[] targetObjects = Physics2D.OverlapCircleAll(mousePosition, 0.1f, _charactersLayer);
 
-            if (targetObjects.Length == 0)
+            if (targetObjects.Length == 0 
+                && _activeCharacter.DistanceCanTravel >= Vector2.Distance(mousePosition, _activeCharacterGameObject.transform.position))
             {
-                _commandInvokerInstance.SetCommand(new MoveCommand(_activeCharacter, 
+                _commandInvokerInstance.SetCommand(new MoveCommand(_activeCharacterGameObject, 
                     new Vector3(mousePosition.x, mousePosition.y, 0)));
                 return;
             }
 
-            foreach (Collider2D targetObject in targetObjects)
+            if(_activeCharacter.ActionsAvailable > 0)
             {
-                if(targetObject.tag == EnemyTagName)
+                foreach (Collider2D targetObject in targetObjects)
                 {
-                    MacroCommand attackMacroCommand = new MacroCommand();
-                    attackMacroCommand.AddCommand(new MoveInActionRangeCommand(new Vector3(mousePosition.x, mousePosition.y, 0), 
-                        _activeCharacter));
-                    attackMacroCommand.AddCommand(new AttackCommand(targetObject.gameObject, _activeCharacter));
+                    if(targetObject.tag != EnemyTagName)
+                    {
+                        continue;
+                    }
 
-                    _commandInvokerInstance.SetCommand(attackMacroCommand);
-                    return;
+                    if (Vector2.Distance(targetObject.transform.position, _activeCharacterGameObject.transform.position) <= 
+                        _activeCharacterGameObject.GetComponent<IWeapon>().AttackRange)
+                    {
+                        _commandInvokerInstance.SetCommand(new AttackCommand(targetObject.gameObject, _activeCharacterGameObject));
+                        return;
+                    }
+
+                    if(Vector2.Distance(targetObject.transform.position, _activeCharacterGameObject.transform.position) <= _activeCharacter.DistanceCanTravel)
+                    {
+                        MacroCommand attackMacroCommand = new MacroCommand();
+                        attackMacroCommand.AddCommand(new MoveInActionRangeCommand(new Vector3(mousePosition.x, mousePosition.y, 0),
+                            _activeCharacterGameObject));
+                        attackMacroCommand.AddCommand(new AttackCommand(targetObject.gameObject, _activeCharacterGameObject));
+
+                        _commandInvokerInstance.SetCommand(attackMacroCommand);
+                        return;
+                    }
                 }
             }
         }

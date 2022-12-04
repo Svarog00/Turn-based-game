@@ -42,9 +42,24 @@ public class TurnController : MonoBehaviour
         _currentNpc?.Act();
     }
 
-    public void PlayerEndTurn()
+    public void EndTurn()
     {
-        SwitchTurn();
+        _currentCharacterIndex++;
+        if(_currentCharacterIndex >= _charactersOrder.Count)
+        {
+            _currentCharacterIndex = 0;
+        }
+
+        var character = _charactersOrder[_currentCharacterIndex].GetComponent<ICharacter>();
+        character.ResetTurn();
+        _turn = character.Side;
+        if (_turn == Turn.Player)
+        {
+            _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
+            return;
+        }
+
+        _currentNpc = _charactersOrder[_currentCharacterIndex].GetComponent<EntityBehaviour>();
     }
 
     public void LoadNewState(Commit commit)
@@ -56,25 +71,5 @@ public class TurnController : MonoBehaviour
         {
             _charactersOrder[i].GetComponent<Character>().SetNewData(commit.CharactersData[i]);
         }
-    }
-
-    private void SwitchTurn()
-    {
-        /*_currentCharacterIndex++;
-        if(_currentCharacterIndex >= _charactersOrder.Count)
-        {
-            _currentCharacterIndex = 0;
-        }*/
-
-        _turn = _charactersOrder[_currentCharacterIndex++ % _charactersOrder.Count]
-            .GetComponent<ICharacter>()
-            .Side;
-        if(_turn == Turn.Player)
-        {
-            _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
-            return;
-        }
-
-        _currentNpc = _charactersOrder[_currentCharacterIndex].GetComponent<EntityBehaviour>();
     }
 }
