@@ -33,7 +33,7 @@ public class TurnController : MonoBehaviour
 
     private void Update()
     {
-        if(_turn == Turn.Player)
+        if (_turn == Turn.Player)
         {
             _playerControl.GetInput();
             return;

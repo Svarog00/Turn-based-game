@@ -9,6 +9,7 @@ namespace Assets._Project.Scripts.VersionControl
     {
         public Commit LastCommit => _lastCommit;
         public Commit CurrentCommit => _currentCommit;
+        public Branch CurrentBranch => _currentBranch;
         public List<Branch> Branches => _branches;
 
         private Commit _lastCommit;
@@ -23,7 +24,7 @@ namespace Assets._Project.Scripts.VersionControl
             _currentCommit = null;
 
             _branches = new List<Branch>();
-            _branches.Add(new Branch());
+            _branches.Add(_currentBranch);
         }
 
         public void AddNewCommit(Commit newCommit)
@@ -81,7 +82,12 @@ namespace Assets._Project.Scripts.VersionControl
 
         public Commit GetPreviousCommit()
         {
-            _currentCommit = _currentCommit?.Previous;
+            if(_currentCommit.Previous == null)
+            {
+                return _currentCommit;
+            }
+
+            _currentCommit = _currentCommit.Previous;
             return _currentCommit;
         }
 

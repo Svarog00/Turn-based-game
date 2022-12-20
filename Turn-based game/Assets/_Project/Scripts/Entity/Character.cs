@@ -30,6 +30,7 @@ namespace Assets._Project.Scripts.Entity
 
         public void ResetTurn()
         {
+            IsActing = false;
             DistanceCanTravel = _maxDistanceCanTravel;
             ActionsAvailable = _maxActionsAvailable;
         }
@@ -38,6 +39,11 @@ namespace Assets._Project.Scripts.Entity
         {
             _entityHealth.HealthPoints = characterWorldData.HealthPoints;
             transform.position = new Vector2(characterWorldData.Position.X, characterWorldData.Position.Y);
+
+            ActionsAvailable = characterWorldData.ActionsAvailable;
+            DistanceCanTravel = characterWorldData.DistanceCanTravel;
+
+            IsActing = false;
         }
 
         public CharacterWorldData GenerateWorldData()
@@ -46,6 +52,8 @@ namespace Assets._Project.Scripts.Entity
             {
                 Position = new Vector2Surrogate(transform.position),
                 HealthPoints = _entityHealth.HealthPoints,
+                ActionsAvailable = ActionsAvailable,
+                DistanceCanTravel = DistanceCanTravel,
             };
         }
     }

@@ -10,7 +10,11 @@ namespace Assets._Project.Scripts
         public List<ICommand> ExecutedCommands
         {
             get => _undoCommandsQueue;
-            set => _undoCommandsQueue = value;
+            set
+            {
+                _undoCommandsQueue = value;
+                _currentCommandNumber = _undoCommandsQueue.Count - 1;
+            }
         }
         private List<ICommand> _undoCommandsQueue;
 

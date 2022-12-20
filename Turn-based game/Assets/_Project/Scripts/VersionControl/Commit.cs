@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Assets._Project.Scripts.VersionControl
 {
+    [Serializable]
     public class Commit : IEquatable<Commit>
     {
         public readonly Guid Guid;

@@ -18,7 +18,7 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
         private Vector2 _oldPosition;
         private Vector2 _targetPosition;
 
-        public MoveInActionRangeCommand(Vector2 targetPosition, GameObject entity)
+        public MoveInActionRangeCommand(Vector2 targetPosition, GameObject entity, float neededRange)
         {
             _targetPosition = targetPosition;
             _entity = entity;
@@ -26,7 +26,7 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
             _entityMovement = _entity.GetComponent<IMovement>();
             _character = _entity.GetComponent<ICharacter>();
 
-            _neededRange = _entity.GetComponent<IWeapon>().AttackRange;
+            _neededRange = neededRange;
             _oldPosition = _entity.transform.position;
         }
 

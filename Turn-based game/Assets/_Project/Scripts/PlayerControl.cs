@@ -1,5 +1,7 @@
 using Assets._Project.Scripts.Entity;
+using Assets._Project.Scripts.Entity.Actions;
 using Assets._Project.Scripts.Entity.EntityCommands;
+using Assets._Project.Scripts.Entity.Interfaces;
 using Assets._Project.Scripts.EntityCommands;
 using UnityEngine;
 
@@ -16,13 +18,22 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private EntityCommandInvokerInstance _commandInvokerInstance;
     [SerializeField] private LayerMask _charactersLayer;
 
+    private AttackAction _selectedAction;
+
     private ICharacter _activeCharacter;
     private GameObject _activeCharacterGameObject;
+
+    public void Awake()
+    {
+        _selectedAction = new AttackAction();
+    }
 
     public void SetActiveCharacter(GameObject character)
     {
         _activeCharacterGameObject = character;
         _activeCharacter = _activeCharacterGameObject.GetComponent<ICharacter>();
+
+        _selectedAction.Weapon = _activeCharacterGameObject.GetComponent<IWeapon>();
     }
 
     public void GetInput()
@@ -54,8 +65,9 @@ public class PlayerControl : MonoBehaviour
                         continue;
                     }
 
-                    if (Vector2.Distance(targetObject.transform.position, _activeCharacterGameObject.transform.position) <= 
-                        _activeCharacterGameObject.GetComponent<IWeapon>().AttackRange)
+                    if (Vector2.Distance(targetObject.transform.position, _activeCharacterGameObject.transform.position) <=
+                        //_activeCharacterGameObject.GetComponent<IWeapon>().AttackRange)
+                        _selectedAction.ActionRange)
                     {
                         _commandInvokerInstance.SetCommand(new AttackCommand(targetObject.gameObject, _activeCharacterGameObject));
                         return;
@@ -65,7 +77,9 @@ public class PlayerControl : MonoBehaviour
                     {
                         MacroCommand attackMacroCommand = new MacroCommand();
                         attackMacroCommand.AddCommand(new MoveInActionRangeCommand(new Vector3(mousePosition.x, mousePosition.y, 0),
-                            _activeCharacterGameObject));
+                            _activeCharacterGameObject,
+                            //_activeCharacterGameObject.GetComponent<IWeapon>().AttackRange,
+                            _selectedAction.ActionRange));
                         attackMacroCommand.AddCommand(new AttackCommand(targetObject.gameObject, _activeCharacterGameObject));
 
                         _commandInvokerInstance.SetCommand(attackMacroCommand);

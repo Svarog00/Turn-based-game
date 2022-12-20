@@ -6,6 +6,7 @@ using Assets._Project.Scripts.Entity;
 using UnityEngine.UI;
 using Assets._Project.Scripts;
 using System.Linq;
+using TMPro;
 
 public class GameStateController : MonoBehaviour
 {
@@ -27,7 +28,12 @@ public class GameStateController : MonoBehaviour
 
     public void CreateNewCommit()
     {
-        Commit newCommit = new Commit(_turnController.CurrentCharacterIndex, GenerateWorldData(), _turnController.CurrentTurn, _commandInvoker.CommandInvoker.ExecutedCommands);
+        Commit newCommit = new Commit(
+            _turnController.CurrentCharacterIndex, 
+            GenerateWorldData(), 
+            _turnController.CurrentTurn, 
+            _commandInvoker.CommandInvoker.ExecutedCommands);
+
         _controller.AddNewCommit(newCommit);
 
         UpdateBranchesList();
@@ -70,7 +76,7 @@ public class GameStateController : MonoBehaviour
                 UpdateNextCommitsList();
             });
 
-            button.GetComponentInChildren<Text>().text = _controller.CurrentCommit.Next[i].Guid.ToString();
+            button.GetComponentInChildren<TMP_Text>().text = _controller.CurrentCommit.Next[i].Guid.ToString();
         }
     }
 
@@ -90,10 +96,14 @@ public class GameStateController : MonoBehaviour
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
                 _controller.SwitchBranch(_controller.Branches[index].Guid);
-                Debug.Log(_controller.Branches[index].Guid);
+                UpdateBranchesList();
             });
 
-            button.GetComponentInChildren<Text>().text = _controller.Branches[index].Guid.ToString();
+            button.GetComponentInChildren<TMP_Text>().text = _controller.Branches[index].Guid.ToString();
+            if(button.GetComponentInChildren<TMP_Text>().text == _controller.CurrentBranch.Guid.ToString())
+            {
+                button.GetComponent<Image>().color = Color.green;
+            }
         }
     }
 

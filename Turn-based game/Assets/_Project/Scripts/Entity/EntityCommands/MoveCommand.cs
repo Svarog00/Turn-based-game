@@ -6,7 +6,7 @@ namespace Assets._Project.Scripts.EntityCommands
 {
     public class MoveCommand : ICommand
     {
-        public bool IsDone => Vector3.Distance(_targetPosition, _entityTransform.position) <= 0.3f;
+        public bool IsDone => Vector3.Distance(_targetPosition, _entityTransform.position) <= 0.4f;
 
         private IMovement _entityMovement;
         private ICharacter _character;

@@ -105,7 +105,7 @@ namespace Assets._Project.Scripts.Entity.StateMachine
                 attackMacroCommand.AddCommand(
                     new MoveInActionRangeCommand(
                         new Vector3(_target.transform.position.x, _target.transform.position.y, 0),
-                        _entityGameObject));
+                        _entityGameObject, _weapon.AttackRange));
                 attackMacroCommand.AddCommand(new AttackCommand(_target, _entityGameObject));
 
                 _commandInvoker.SetCommand(attackMacroCommand);

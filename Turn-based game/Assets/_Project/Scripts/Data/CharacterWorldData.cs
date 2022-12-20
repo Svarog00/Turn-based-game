@@ -9,6 +9,8 @@ namespace Assets._Project.Scripts.Data
         public Vector2Surrogate Position;
 
         public int HealthPoints;
+        public int ActionsAvailable;
+        public float DistanceCanTravel;
 
         public bool Equals(CharacterWorldData other)
         {

@@ -5,11 +5,7 @@ namespace Assets._Project.Scripts.Entity
 {
     public class EntityHealth : MonoBehaviour, IHealth
     {
-        public event EventHandler<HealthChangedEventArgs> OnHealthChanged;
-        public class HealthChangedEventArgs
-        {
-            public int Health { get; set; }
-        }
+        public event EventHandler<OnHealthChangedEventArgs> OnHealthChangedEventHandler;
 
         public int HealthPoints 
         {
@@ -41,7 +37,7 @@ namespace Assets._Project.Scripts.Entity
         {
             Debug.Log("Ahh that's better!");
             _currentHealth += health;
-            OnHealthChanged?.Invoke(this, new HealthChangedEventArgs { Health = _currentHealth });
+            OnHealthChangedEventHandler?.Invoke(this, new OnHealthChangedEventArgs { CurrentHealth = _currentHealth });
 
             gameObject.SetActive(_isAlive);
         }
@@ -50,7 +46,7 @@ namespace Assets._Project.Scripts.Entity
         {
             Debug.Log("Oi that hurts!");
             _currentHealth -= damage;
-            OnHealthChanged?.Invoke(this, new HealthChangedEventArgs { Health = _currentHealth });
+            OnHealthChangedEventHandler?.Invoke(this, new OnHealthChangedEventArgs { CurrentHealth = _currentHealth });
 
             gameObject.SetActive(_isAlive);
         }
