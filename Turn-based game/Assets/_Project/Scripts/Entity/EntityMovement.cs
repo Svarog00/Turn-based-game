@@ -10,48 +10,31 @@ public class EntityMovement : MonoBehaviour, IMovement
     public bool CanMove;
 
     [SerializeField] private float _speed;
-    [SerializeField] private List<Vector3> _pathVectorList;
+
+    private List<Vector3> _pathVectorList;
 
     private Rigidbody2D _rigidbody2;
+
     private Vector2 _direction;
+    private Vector3 _targetPosition;
 
     private Pathfinding _pathfinding;
     private int _currentPathListIndex;
-
-    private float _desiredRange;
-    private Vector2 _targetPosition;
 
     private void Start()
     {
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _pathfinding = Pathfinding.Instance;
-
-        _desiredRange = -1f;
     }
 
     private void FixedUpdate()
     {
+        if(!CanMove)
+        {
+            return;
+        }
+
         Move();
-        if(_desiredRange > -1f)
-        {
-            CheckRange();
-        }
-    }
-
-    private void CheckRange()
-    {
-        if(Vector2.Distance(transform.position, _targetPosition) <= _desiredRange)
-        {
-            CanMove = false;
-            _desiredRange = -1f;
-        }
-    }
-
-    public void MoveToInRange(Vector2 position, float range)
-    {
-        _desiredRange = range;
-        _targetPosition = position;
-        MoveTo(position);
     }
 
     public void MoveTo(Vector2 position)
@@ -60,10 +43,16 @@ public class EntityMovement : MonoBehaviour, IMovement
         CanMove = true;
     }
 
+    public void StopMove()
+    {
+        CanMove = false;
+    }
+
     private void SetMovementTarget(Vector2 position)
     {
         _currentPathListIndex = 0;
         _pathVectorList = _pathfinding.FindPath(transform.position, position);
+        _targetPosition = _pathVectorList[_currentPathListIndex];
     }
 
     private void Move()
@@ -78,21 +67,21 @@ public class EntityMovement : MonoBehaviour, IMovement
             return;
         }
 
-        Vector3 targetPosition = _pathVectorList[_currentPathListIndex];
-        if (Vector3.Distance(transform.position, targetPosition) <= 0.1f)
+        if (Vector3.Distance(transform.position, _targetPosition) <= 0.1f)
         {
             _currentPathListIndex++;
             if (_currentPathListIndex >= _pathVectorList.Count)
             {
                 CanMove = false;
                 //Return to idle animation state
+                return;
             }
+            _targetPosition = _pathVectorList[_currentPathListIndex];
         }
         else
         {
-            _direction = (targetPosition - transform.position).normalized;
+            _direction = (_targetPosition - transform.position).normalized;
             _rigidbody2.MovePosition(_rigidbody2.position + _direction * _speed * Time.deltaTime);
-            //Animate movement
         }
     }
 }

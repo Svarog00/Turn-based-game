@@ -1,22 +1,29 @@
 ﻿using Assets._Project.Scripts.Entity.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets._Project.Scripts.Entity.Actions
 {
     public class AttackAction : IAction
     {
-        public float ActionRange => Weapon.AttackRange;
+        public float ActionRange => _weapon.AttackRange;
 
-        public IWeapon Weapon;
+        private IWeapon _weapon;
+        private GameObject _target;
 
-        public void ExecuteAction(GameObject target)
+        public AttackAction(IWeapon weapon)
         {
-            Weapon.Attack(target.GetComponent<IHealth>());
+            _weapon = weapon;
+        }
+
+        public AttackAction(IWeapon weapon, GameObject target)
+        {
+            _weapon = weapon;
+            _target = target;
+        }
+
+        public void ExecuteAction()
+        {
+            _weapon.Attack(_target.GetComponent<IHealth>());
         }
     }
 }

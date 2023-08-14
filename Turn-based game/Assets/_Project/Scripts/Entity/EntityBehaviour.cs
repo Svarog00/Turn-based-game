@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Assets._Project.Scripts.Entity.StateMachine;
-using Assets._Project.Scripts.Entity.Interfaces;
 
 namespace Assets._Project.Scripts.Entity
 {

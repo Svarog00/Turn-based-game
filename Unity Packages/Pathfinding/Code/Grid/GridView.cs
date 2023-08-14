@@ -15,12 +15,12 @@ public class GridView : MonoBehaviour
 
     private GridMesh<PathNode> _gridMesh;
 
-    // Start is called before the first frame update
     void Awake()
     {
         _gridMesh = new GridMesh<PathNode>(_width, _height, _cellSize, _origin, //Width, height, cell size and start point
             (GridMesh<PathNode> grid, int x, int y) => new PathNode(grid, x, y),
             _showMesh);
+
         Pathfinding pathfinding = new Pathfinding(_gridMesh);
     }
 }

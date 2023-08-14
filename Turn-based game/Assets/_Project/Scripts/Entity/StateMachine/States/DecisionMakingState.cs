@@ -53,28 +53,33 @@ namespace Assets._Project.Scripts.Entity.StateMachine
 
         public void Handle()
         {
+            if (_character.ActionsAvailable <= 0)
+            {
+                PassTurn();
+                return;
+            }
+
             if(_health.HealthPoints > 25)
             {
                 AttackTarget();
-                _entityStateMachine.Enter<ExecutingCommandState>();
             }
 
             if(_health.HealthPoints < 25 && !IsAlone())
             {
                 AttackTarget();
-                _entityStateMachine.Enter<ExecutingCommandState>();
             }
 
             if (_health.HealthPoints < 25 && IsAlone() && _distanceToNearestEnemy < _weapon.AttackRange)
             {
                 Flee();
-                _entityStateMachine.Enter<ExecutingCommandState>();
             }
+
+            _entityStateMachine.Enter<ExecutingCommandState>();
         }
 
         public void Exit()
         {
-            PassTurn();
+            
         }
 
         private void ChooseTarget()
@@ -93,29 +98,30 @@ namespace Assets._Project.Scripts.Entity.StateMachine
 
         private bool IsAlone()
         {
-            var charactersAround = GameObject.FindObjectsOfType<Character>().Where(character => character.Side == _character.Side).ToArray();
-            return charactersAround.Length == 0;
+            var charactersAround = GameObject.FindObjectsOfType<Character>().Where(character => character.Side == _character.Side);
+            return charactersAround.Count() == 0;
         }
 
         private void AttackTarget()
         {
-            if(_distanceToNearestEnemy > _weapon.AttackRange)
+            if (_distanceToNearestEnemy <= _weapon.AttackRange)
+            {
+                _commandInvoker.SetCommand(new AttackCommand(_target, _entityGameObject));
+                return;
+            }
+
+            if (_distanceToNearestEnemy > _weapon.AttackRange)
             {
                 MacroCommand attackMacroCommand = new MacroCommand();
                 attackMacroCommand.AddCommand(
                     new MoveInActionRangeCommand(
+                        _entityGameObject,
                         new Vector3(_target.transform.position.x, _target.transform.position.y, 0),
-                        _entityGameObject, _weapon.AttackRange));
+                        _weapon.AttackRange));
+
                 attackMacroCommand.AddCommand(new AttackCommand(_target, _entityGameObject));
 
                 _commandInvoker.SetCommand(attackMacroCommand);
-
-                return;
-            }
-
-            if(_distanceToNearestEnemy <= _weapon.AttackRange)
-            {
-                _commandInvoker.SetCommand(new AttackCommand(_target, _entityGameObject));
 
                 return;
             }

@@ -34,6 +34,11 @@ namespace Assets._Project.Scripts.EntityCommands
             _isDone = true;
         }
 
+        public void Cancel()
+        {
+            
+        }
+
         public void Undo()
         {
             _character.ActionsAvailable++;

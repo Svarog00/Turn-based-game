@@ -1,7 +1,5 @@
 using Assets._Project.Scripts;
 using Assets._Project.Scripts.EntityCommands;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EntityCommandInvokerInstance : MonoBehaviour

@@ -16,18 +16,17 @@ public class TurnController : MonoBehaviour
     public int CurrentCharacterIndex => _currentCharacterIndex;
     public Turn CurrentTurn => _turn;
 
-    [SerializeField] private GameObject _startCharacter;
     [SerializeField] private PlayerControl _playerControl;
     [SerializeField] private List<GameObject> _charactersOrder;
 
     private Turn _turn;
     private int _currentCharacterIndex;
+
     private EntityBehaviour _currentNpc;
 
     void Start()
     {
         _currentCharacterIndex = 0;
-        _startCharacter = _charactersOrder[_currentCharacterIndex];
         _playerControl.SetActiveCharacter(_charactersOrder[_currentCharacterIndex]);
     }
 
@@ -45,13 +44,14 @@ public class TurnController : MonoBehaviour
     public void EndTurn()
     {
         _currentCharacterIndex++;
-        if(_currentCharacterIndex >= _charactersOrder.Count)
+        if(_currentCharacterIndex == _charactersOrder.Count)
         {
             _currentCharacterIndex = 0;
         }
 
         var character = _charactersOrder[_currentCharacterIndex].GetComponent<ICharacter>();
         character.ResetTurn();
+
         _turn = character.Side;
         if (_turn == Turn.Player)
         {

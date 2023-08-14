@@ -27,6 +27,11 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
             ExecuteCommandsAsync();
         }
 
+        public void Cancel()
+        {
+            
+        }
+
         public void Undo()
         {
             for (int i = _commands.Count-1; i >= 0; i--)
@@ -35,7 +40,7 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
             }
         }
 
-        private async void ExecuteCommandsAsync()
+        private async Task ExecuteCommandsAsync()
         {
             for(int i = 0; i < _commands.Count; i++)
             {
@@ -49,5 +54,6 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
 
             IsDone = true;
         }
+
     }
 }

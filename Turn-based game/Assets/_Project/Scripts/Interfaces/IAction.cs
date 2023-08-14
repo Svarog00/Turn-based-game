@@ -11,6 +11,6 @@ namespace Assets._Project.Scripts.Entity.Interfaces
     {
         public float ActionRange { get; }
 
-        void ExecuteAction(GameObject target);
+        void ExecuteAction();
     }
 }

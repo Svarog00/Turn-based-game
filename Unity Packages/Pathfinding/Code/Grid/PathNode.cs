@@ -9,7 +9,8 @@ public class PathNode
     public readonly int X;
     public readonly int Y;
 
-    public bool IsWalkable;
+    public readonly bool IsWalkable;
+
     public int GCost;
     public int HCost;
     public int FCost;
@@ -25,10 +26,12 @@ public class PathNode
         _grid = grid;
         X = x;
         Y = y;
+
         IsWalkable = !Physics2D.OverlapCircle(_grid.GetWorldPosition(X, Y) + new Vector3(_grid.CellSize / 2f, _grid.CellSize / 2f), 
             _grid.CellSize * 0.4f, 
             LayerMask.GetMask(ObstacleLayerMaskName));
     }
+
     public void CalculateFCost()
     {
         FCost = GCost + HCost;

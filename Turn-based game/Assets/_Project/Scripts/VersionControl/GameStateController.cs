@@ -12,8 +12,11 @@ public class GameStateController : MonoBehaviour
 {
     [SerializeField] private EntityCommandInvokerInstance _commandInvoker;
     [SerializeField] private TurnController _turnController;
+
+    [Header("UI")]
     [SerializeField] private Transform _commitsViewArea;
     [SerializeField] private Transform _branchesViewArea;
+
     [SerializeField] private GameObject _buttonPrefab;
 
     private VersionController _controller;

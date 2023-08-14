@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets._Project.Scripts.Entity.EntityCommands
 {
-    public class MoveInActionRangeCommand : ICommand
+    public class MoveInActionRangeCommand : IContinousCommand
     {
         public bool IsDone => Vector3.Distance(_targetPosition, _entity.transform.position) <= _neededRange;
 
@@ -15,13 +15,13 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
         private IMovement _entityMovement;
         private ICharacter _character;
 
-        private Vector2 _oldPosition;
         private Vector2 _targetPosition;
+        private Vector2 _oldPosition;
 
-        public MoveInActionRangeCommand(Vector2 targetPosition, GameObject entity, float neededRange)
+        public MoveInActionRangeCommand(GameObject executioner, Vector2 targetPosition, float neededRange)
         {
             _targetPosition = targetPosition;
-            _entity = entity;
+            _entity = executioner;
 
             _entityMovement = _entity.GetComponent<IMovement>();
             _character = _entity.GetComponent<ICharacter>();
@@ -33,25 +33,41 @@ namespace Assets._Project.Scripts.Entity.EntityCommands
         public void Execute()
         {
             _character.IsActing = true;
-            _entityMovement.MoveToInRange(_targetPosition, _neededRange);
+            _entityMovement.MoveTo(_targetPosition);
             WaitCommandDone();
+        }
+
+        public void Cancel()
+        {
+            //_character.DistanceCanTravel -= Vector2.Distance(_oldPosition, _targetPosition);
+            _character.ActionsAvailable--;
+            _character.IsActing = false;
+            _entityMovement.StopMove();
         }
 
         public void Undo()
         {
-            _character.DistanceCanTravel += Vector2.Distance(_oldPosition, _targetPosition);
+            //_character.DistanceCanTravel += Vector2.Distance(_oldPosition, _targetPosition);
+            _character.ActionsAvailable++;
             _entity.transform.position = _oldPosition;
         }
 
-        private async void WaitCommandDone()
+        public void WaitCommandDone()
+        {
+            WaitCommandDoneAsync();
+        }
+
+        private async Task WaitCommandDoneAsync()
         {
             while (!IsDone)
             {
                 await Task.Yield();
             }
 
-            _character.DistanceCanTravel -= Vector2.Distance(_oldPosition, _targetPosition);
+            //_character.DistanceCanTravel -= Vector2.Distance(_oldPosition, _targetPosition);
+            _character.ActionsAvailable--;
             _character.IsActing = false;
+            _entityMovement.StopMove();
         }
     }
 }

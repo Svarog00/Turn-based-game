@@ -6,12 +6,7 @@ public class UI_Control : MonoBehaviour
 {
     [SerializeField] private GameObject _versionControlUI;
 
-    private bool _isMenuActive;
-
-    private void Start()
-    {
-        _isMenuActive = true;
-    }
+    [SerializeField] private bool _isMenuActive;
 
     // Update is called once per frame
     void Update()
