@@ -56,13 +56,14 @@ public class PlayerControl : MonoBehaviour
 
     private void ProcessLeftClick()
     {
-        Vector3 mousePosition;
 
-        if (_clickHandlerService.IsLeftButtonDown(out mousePosition))
+        if (_clickHandlerService.IsLeftButtonDown())
         {
-            GameObject targetObject = _clickHandlerService.GetObjectFromClick();
+            MouseClickData mouseClickData = _clickHandlerService.GetClickData();
 
-            if (targetObject == null)
+            Vector3 mousePosition = mouseClickData.ClickPosition;
+
+            if (mouseClickData.ClickedObjects.Count == 0)
             {
                 if (_activeCharacter.DistanceCanTravel <= Vector2.Distance(mousePosition, _activeCharacterGameObject.transform.position))
                 {
@@ -75,6 +76,7 @@ public class PlayerControl : MonoBehaviour
                 return;
             }
 
+            GameObject targetObject = mouseClickData.ClickedObjects[0].gameObject;
             float distanceToTarget = Vector2.Distance(targetObject.transform.position, _activeCharacterGameObject.transform.position);
 
             if (distanceToTarget <= _selectedAction.ActionRange)

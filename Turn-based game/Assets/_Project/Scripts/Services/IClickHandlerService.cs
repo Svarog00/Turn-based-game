@@ -7,8 +7,6 @@ namespace Services
         public bool IsLeftButtonDown();
         public bool IsRightButtonDown();
 
-        public bool IsLeftButtonDown(out Vector3 mousePoistion);
-        public bool IsRightButtonDown(out Vector3 mousePoistion);
-        public GameObject GetObjectFromClick();
+        public MouseClickData GetClickData();
     }
 }
